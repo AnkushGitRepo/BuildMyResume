@@ -11,7 +11,9 @@ const Navbar = () => {
           </h2>
         </Link>
 
-        <ProfileInfoCard />
+        <Link to="/settings">
+          <ProfileInfoCard />
+        </Link>
       </div>
     </div>
 };

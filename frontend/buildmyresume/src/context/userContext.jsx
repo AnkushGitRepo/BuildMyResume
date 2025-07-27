@@ -30,7 +30,7 @@ const UserProvider = ({ children }) => {
     };
 
     fetchUser();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateUser = (userData) => {
     setUser(userData);

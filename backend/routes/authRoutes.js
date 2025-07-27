@@ -1,23 +1,19 @@
 const express = require("express");
-const { registerUser, loginUser, getUserProfile } = require("../controllers/authController");
+const { registerUser, verifyOtp, loginUser, getUserProfile, forgotPassword, resetPassword, updateProfile, changePassword, sendEmailOtp, verifyEmailOtp, upload } = require("../controllers/authController");
 const { protect } = require("../middlewares/authMiddleware");
-const upload = require('../middlewares/uploadMiddleware')
 
 const router = express.Router();
 
 // Auth Routes
-router.post("/register", registerUser);   // Register User
+router.post("/register", registerUser);   // Register User (sends OTP)
+router.post("/verify-otp", verifyOtp);     // Verify OTP and complete registration
 router.post("/login", loginUser);         // Login User
+router.post("/forgot-password", forgotPassword); // Forgot Password
+router.put("/reset-password/:token", resetPassword); // Reset Password
 router.get("/profile", protect, getUserProfile);  // Get User Profile
-
-router.post("/upload-image", upload.single("image"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: "No file uploaded" });
-  }
-  const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${
-    req.file.filename
-  }`;
-  res.status(200).json({ imageUrl });
-});
+router.put("/profile", protect, upload.single("profileImage"), updateProfile); // Update User Profile
+router.post("/change-password", protect, changePassword); // Change User Password
+router.post("/send-email-otp", protect, sendEmailOtp); // Send OTP for email verification
+router.post("/verify-email-otp", protect, verifyEmailOtp); // Verify OTP for email change
 
 module.exports = router;

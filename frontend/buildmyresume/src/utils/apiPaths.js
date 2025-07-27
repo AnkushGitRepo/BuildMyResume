@@ -5,7 +5,14 @@ export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", // Signup 
     LOGIN: "/api/auth/login", // Authenticate user & return JWT token
+    VERIFY_OTP: "/api/auth/verify-otp", // Verify OTP
+    FORGOT_PASSWORD: "/api/auth/forgot-password", // Forgot Password
+    RESET_PASSWORD: (token) => `/api/auth/reset-password/${token}`, // Reset Password
     GET_PROFILE: "/api/auth/profile", // Get logged-in user details
+    UPDATE_PROFILE: "/api/auth/profile", // Update logged-in user details
+    CHANGE_PASSWORD: "/api/auth/change-password", // Change user password
+    SEND_EMAIL_OTP: "/api/auth/send-email-otp", // Send OTP for email verification
+    VERIFY_EMAIL_OTP: "/api/auth/verify-email-otp", // Verify OTP for email change
   },
 
   RESUME: {
