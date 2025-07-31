@@ -6,6 +6,7 @@ import Settings from "./pages/Settings/Settings";
 import Dashboard from "./pages/Home/Dashboard";
 import EditResume from "./pages/ResumeUpdate/EditResume";
 import UserProvider from "./context/userContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -17,7 +18,9 @@ const App = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/resume/:resumeId" element={<EditResume />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/settings" element={<Settings />} />
+            </Route>
           </Routes>
         </Router>
       </div>

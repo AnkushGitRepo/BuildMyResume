@@ -37,7 +37,7 @@ const Settings = () => {
       setName(user.name || "");
       setEmail(user.email || "");
       setOriginalEmail(user.email || "");
-      setProfileImagePreview(user.profileImage || null);
+      setProfileImagePreview(user.profileImageUrl || null);
     }
   }, [user]);
 

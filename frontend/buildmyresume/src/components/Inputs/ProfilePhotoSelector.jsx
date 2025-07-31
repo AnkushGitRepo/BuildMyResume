@@ -1,39 +1,33 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react';
 import { LuUser, LuUpload, LuTrash } from "react-icons/lu";
 
-const ProfilePhotoSelector = ({image, setImage, preview, setPreview}) => {
+const ProfilePhotoSelector = ({ image, setImage, preview, setPreview }) => {
   const inputRef = useRef(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // Update the image state
       setImage(file);
-
-      // Generate preview URL from the file
-      const preview = URL.createObjectURL(file);
-      if(setPreview){
-        setPreview(preview)
+      const previewUrl = URL.createObjectURL(file);
+      if (setPreview) {
+        setPreview(previewUrl);
       }
-      setPreviewUrl(preview);
     }
   };
 
   const handleRemoveImage = () => {
     setImage(null);
-    setPreviewUrl(null);
-
-    if(setPreview){
-      setPreview(null)
+    if (setPreview) {
+      setPreview(null);
     }
   };
 
   const onChooseFile = () => {
     inputRef.current.click();
   };
+
   return (
-   <div className="flex justify-center mb-6">
+    <div className="flex justify-center mb-6">
       <input
         type="file"
         accept="image/*"
@@ -42,14 +36,13 @@ const ProfilePhotoSelector = ({image, setImage, preview, setPreview}) => {
         className="hidden"
       />
 
-      {!image ? (
-        <div className="w-20 h-20 flex items-center justify-center bg-purple-50 rounded-full relative cursor-pointer">
+      {!preview ? (
+        <div className="w-20 h-20 flex items-center justify-center bg-purple-50 rounded-full relative cursor-pointer" onClick={onChooseFile}>
           <LuUser className="text-4xl text-purple-500" />
-
           <button
             type="button"
             className="w-8 h-8 flex items-center justify-center bg-linear-to-r from-purple-500/85 to-purple-700 text-white rounded-full absolute -bottom-1 -right-1 cursor-pointer"
-            onClick={onChooseFile}
+            onClick={(e) => { e.stopPropagation(); onChooseFile(); }}
           >
             <LuUpload />
           </button>
@@ -57,21 +50,22 @@ const ProfilePhotoSelector = ({image, setImage, preview, setPreview}) => {
       ) : (
         <div className="relative">
           <img
-            src={preview || previewUrl}
+            src={preview}
             alt="profile photo"
-            className="w-20 h-20 rounded-full object-cover"
+            className="w-20 h-20 rounded-full object-cover cursor-pointer"
+            onClick={onChooseFile}
           />
           <button
             type="button"
             className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1 cursor-pointer"
-            onClick={handleRemoveImage}
+            onClick={(e) => { e.stopPropagation(); handleRemoveImage(); }}
           >
             <LuTrash />
           </button>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePhotoSelector
+export default ProfilePhotoSelector;

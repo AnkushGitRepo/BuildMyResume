@@ -1,5 +1,3 @@
-const fs = require("fs");
-const path = require("path");
 const Resume = require("../models/Resume");
 const upload = require("../middlewares/uploadMiddleware");
 
@@ -17,28 +15,15 @@ const uploadResumeImages = async (req, res) => {
         return res.status(404).json({ message: "Resume not found or unauthorized" });
       }
 
-      const uploadsFolder = path.join(__dirname, '..', 'uploads');
-      const baseUrl = `${req.protocol}://${req.get("host")}`;
-
       const newThumbnail = req.files.thumbnail?.[0];
       const newProfileImage = req.files.profileImage?.[0];
 
-      // If new thumbnail uploaded, delete old one
       if (newThumbnail) {
-        if(resume.thumbnailLink){
-          const oldThumbnail = path.join(uploadsFolder, path.basename(resume.thumbnailLink));
-          if (fs.existsSync(oldThumbnail)) fs.unlinkSync(oldThumbnail);
-        }
-        resume.thumbnailLink = `${baseUrl}/uploads/${newThumbnail.filename}`;
+        resume.thumbnailLink = newThumbnail.path;
       }
 
-      // If new profile image uploaded, delete old one
       if (newProfileImage) {
-        if(resume.profileInfo?.profilePreviewUrl){
-          const oldProfile = path.join(uploadsFolder, path.basename(resume.profileInfo.profilePreviewUrl));
-          if (fs.existsSync(oldProfile)) fs.unlinkSync(oldProfile);
-        }
-        resume.profileInfo.profilePreviewUrl = `${baseUrl}/uploads/${newProfileImage.filename}`;
+        resume.profileInfo.profilePreviewUrl = newProfileImage.path;
       }
 
       await resume.save();

@@ -2,20 +2,8 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
-const multer = require("multer");
-const path = require("path");
+const cloudinary = require("cloudinary").v2;
 
-// Multer setup for image uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Ensure this directory exists
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 // Generate JWT Token
 const generateToken = (userId) => {
@@ -252,18 +240,40 @@ const updateProfile = async (req, res) => {
     user.name = req.body.name || user.name;
 
     if (req.file) {
-      user.profileImageUrl = `/uploads/${req.file.filename}`;
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "profile_images",
+          public_id: `${user._id}_profile`,
+          overwrite: true,
+        },
+        (error, result) => {
+          if (error) {
+            console.error("Cloudinary upload error:", error);
+            return res.status(500).json({ message: "Image upload failed", error });
+          }
+          user.profileImageUrl = result.secure_url;
+          user.save().then(updatedUser => {
+            res.json({
+              _id: updatedUser._id,
+              name: updatedUser.name,
+              email: updatedUser.email,
+              profileImageUrl: updatedUser.profileImageUrl,
+              token: generateToken(updatedUser._id),
+            });
+          });
+        }
+      );
+      uploadStream.end(req.file.buffer);
+    } else {
+      const updatedUser = await user.save();
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        profileImageUrl: updatedUser.profileImageUrl,
+        token: generateToken(updatedUser._id),
+      });
     }
-
-    const updatedUser = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      profileImageUrl: updatedUser.profileImageUrl,
-      token: generateToken(updatedUser._id),
-    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -389,5 +399,4 @@ module.exports = {
   changePassword,
   sendEmailOtp,
   verifyEmailOtp,
-  upload,
 };

@@ -10,14 +10,13 @@ const { protect } = require("../middlewares/authMiddleware");
 const { uploadResumeImages } = require("../controllers/uploadImages");
 
 const router = express.Router();
+const jsonParser = express.json();
 
-
-router.post("/", protect, createResume);   // Create Resume
-router.get("/", protect, getUserResumes);   // Get Resume
-router.get("/:id", protect, getResumeById);   // Get Resume By ID
-router.put("/:id", protect, updateResume);   // Update Resume
+router.post("/", protect, jsonParser, createResume);
+router.get("/", protect, getUserResumes);
+router.get("/:id", protect, getResumeById);
+router.put("/:id", protect, jsonParser, updateResume);
 router.put("/:id/upload-images", protect, uploadResumeImages);
-
-router.delete("/:id", protect, deleteResume);   // Delete Resume
+router.delete("/:id", protect, deleteResume);
 
 module.exports = router;

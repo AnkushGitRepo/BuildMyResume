@@ -1,2 +1,5 @@
 backend/.env
+frontend/buildmyresume/.env
 .env
+backend/node_modules
+.idea

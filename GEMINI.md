@@ -145,7 +145,7 @@ This directory contains the Node.js Express.js server that handles API requests,
     -   `uploadImages.js`: Handles image upload logic.
 -   `middlewares/`: Contains middleware functions for request processing.
     -   `authMiddleware.js`: Middleware for authenticating user requests (e.g., JWT verification).
-    -   `uploadMiddleware.js`: Middleware for handling file uploads (e.g., Multer configuration).
+-   `uploadMiddleware.js`: Middleware for handling file uploads (e.g., Multer configuration).
 -   `models/`: Defines the Mongoose schemas and models for the database.
     -   `Resume.js`: Mongoose model for resume data.
     -   `User.js`: Mongoose model for user data.
@@ -185,7 +185,7 @@ This directory contains the React.js application built with Vite.
             -   `TemplateOne.jsx`, `TemplateThree.jsx`, `TemplateTwo.jsx`: Specific resume template components.
     -   `context/`: React Context API for global state management.
         -   `userContext.jsx`: Context for managing user-related state (e.g., authentication status, user data).
-    -   `pages/`: Top-level components representing different pages of the application.
+-   `pages/`: Top-level components representing different pages of the application.
         -   `LandingPage.jsx`: The initial landing page.
         -   `Auth/`: Authentication-related pages.
             -   `Login.jsx`, `SignUp.jsx`.
@@ -198,7 +198,7 @@ This directory contains the React.js application built with Vite.
     -   `utils/`: Utility functions and configurations.
         -   `apiPaths.js`: Defines API endpoints.
         -   `axiosInstance.js`: Configures Axios for making HTTP requests to the backend.
-        -   `data.js`: Might contain static data or mock data.
+-   `data.js`: Might contain static data or mock data.
         -   `helper.js`: General utility functions.
         -   `uploadImage.js`: Utility for handling image uploads from the frontend.
 -   `node_modules/`: Contains all installed Node.js packages for the frontend.
@@ -231,9 +231,14 @@ This section will store a summary of recent interactions or key facts remembered
     -   Refactored footer on LandingPage:
         -   Changed to a professional-looking fixed footer.
         -   Moved title to left, social media links (with icons) to right.
-        -   Reverted social media links to original user-provided URLs.
+-   Reverted social media links to original user-provided URLs.
         -   Removed "Made with ❤️... Happy Coding" text.
     -   Removed "Features That Make You Shine" section from LandingPage.
     -   Modified gradient color for "Resume Effortlessly" text on LandingPage to a professional blue.
     -   Made the hero image on LandingPage non-draggable.
     -   Resolved page loading issue by adding missing `react-icons` imports.
+-   **Session Summary (July 31, 2025):**
+    -   **Cloudinary Integration:** Implemented Cloudinary for image uploads, replacing local storage. This involved installing `cloudinary` and `multer-storage-cloudinary`, updating `uploadMiddleware.js` and `uploadImages.js` to use Cloudinary, and removing the local `uploads` directory.
+    -   **Middleware Conflict Resolution:** Diagnosed and fixed a "Request timeout" error caused by `express.json()` middleware interfering with `multipart/form-data` requests. The global `express.json()` was removed from `server.js` and applied specifically to routes requiring JSON parsing in `authRoutes.js` and `resumeRoutes.js`.
+    -   **Profile Image Persistence:** Ensured the user's profile image persists on the settings page after refresh by correctly initializing `profileImagePreview` from `user.profileImageUrl` in `Settings.jsx` and updating `ProfilePhotoSelector.jsx` to correctly display the `preview` prop.
+    -   **Security Enhancement:** Implemented a `ProtectedRoute` component to restrict access to the `/settings` page to authenticated users only, redirecting unauthenticated users to the homepage.
