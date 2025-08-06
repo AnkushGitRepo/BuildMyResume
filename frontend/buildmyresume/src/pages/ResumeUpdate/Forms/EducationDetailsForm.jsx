@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "../../../components/Inputs/Input";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
+import Button from "../../../components/Button";
 
 const EducationDetailsForm = ({
   educationInfo,
@@ -69,9 +70,7 @@ const EducationDetailsForm = ({
           </div>
         ))}
 
-        <button
-          type="button"
-          className="self-start flex items-center gap-2 px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium hover:bg-purple-200 cursor-pointer"
+        <Button
           onClick={() =>
             addArrayItem({
               degree: "",
@@ -80,9 +79,13 @@ const EducationDetailsForm = ({
               endDate: "",
             })
           }
+          hideArrow={true}
+          className="w-auto self-start"
         >
-          <LuPlus /> Add Education
-        </button>
+          <div className="flex items-center gap-2">
+            <LuPlus /> Add Education
+          </div>
+        </Button>
       </div>
     </div>
 };

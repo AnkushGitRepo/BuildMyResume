@@ -36,14 +36,14 @@ const ProfileInfoForm = ({profileData, updateSection}) => {
             type="text"
           />
 
-          <div className="col-span-2 mt-3">
-            <label className="text-xs font-medium text-slate-600">
+          <div className="col-span-2 mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
               Summary
             </label>
 
             <textarea
               placeholder="Short Introduction"
-              className="form-input"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               rows={4}
               value={profileData.summary || ""}
               onChange={({ target }) => updateSection("summary", target.value)}

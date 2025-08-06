@@ -27,6 +27,7 @@ import RenderResume from "../../components/ResumeTemplates/RenderResume";
 import { captureElementAsImage, dataURLtoFile, fixTailwindColors } from "../../utils/helper";
 import ThemeSelector from "./ThemeSelector";
 import Modal from "../../components/Modal";
+import Button from "../../components/Button";
 
 const EditResume = () => {
   const { resumeId } = useParams();
@@ -577,7 +578,7 @@ const EditResume = () => {
   return (
     <DashboardLayout>
       <div className="container mx-auto">
-        <div className="flex items-center justify-between gap-5 bg-white rounded-lg border border-purple-100 py-3 px-4 mb-4">
+        <div className="flex items-center justify-between gap-5 bg-white rounded-lg border border-blue-100 py-3 px-4 mb-4">
           <TitleInput
             title={resumeData.title}
             setTitle={(value) =>
@@ -589,31 +590,44 @@ const EditResume = () => {
           />
 
           <div className="flex items-center gap-4">
-            <button
-              className="btn-small-light"
-              onClick={() => setOpenThemeSelector(true)}
+            <Button
+              onClick={() => {
+                console.log("Setting openThemeSelector to true");
+                setOpenThemeSelector(true);
+              }}
+              hideArrow={true}
+              className="w-auto"
+              small={true}
             >
-              <LuPalette className="text-[16px]" />
-              <span className="hidden md:block">Change Theme</span>
-            </button>
+              <div className="flex items-center gap-2">
+                <LuPalette className="text-[16px]" />
+                <span>Theme</span>
+              </div>
+            </Button>
 
-            <button className="btn-small-light" onClick={handleDeleteResume}>
-              <LuTrash2 className="text-[16px]" />
-              <span className="hidden md:block">Delete</span>
-            </button>
+            <Button onClick={handleDeleteResume} hideArrow={true} className="w-auto" small={true}>
+              <div className="flex items-center gap-2">
+                <LuTrash2 className="text-[16px]" />
+                <span>Delete</span>
+              </div>
+            </Button>
 
-            <button
-              className="btn-small-light"
+            <Button
               onClick={() => setOpenPreviewModal(true)}
+              hideArrow={true}
+              className="w-auto"
+              small={true}
             >
-              <LuDownload className="text-[16px]" />
-              <span className="hidden md:block">Preview & Download</span>
-            </button>
+              <div className="flex items-center gap-2">
+                <LuDownload className="text-[16px]" />
+                <span>Preview</span>
+              </div>
+            </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="bg-white rounded-lg border border-purple-100 overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+          <div className="bg-white rounded-lg border border-blue-100 overflow-hidden">
             <StepProgress progress={progress} />
 
             {renderForm()}
@@ -626,38 +640,46 @@ const EditResume = () => {
               )}
 
               <div className="flex items-end justify-end gap-3 mt-3 mb-5">
-                <button
-                  className="btn-small-light"
+                <Button
                   onClick={goBack}
                   disabled={isLoading}
+                  hideArrow={true}
+                  className="w-auto"
+                  small={true}
                 >
-                  <LuArrowLeft className="text-[16px]" />
-                  Back
-                </button>
-                <button
-                  className="btn-small-light"
+                  <div className="flex items-center gap-2">
+                    <LuArrowLeft className="text-[16px]" />
+                    Back
+                  </div>
+                </Button>
+                <Button
                   onClick={uploadResumeImages}
                   disabled={isLoading}
+                  hideArrow={true}
+                  className="w-auto"
+                  small={true}
                 >
-                  <LuSave className="text-[16px]" />
-                  {isLoading ? "Updating..." : "Save & Exit"}
-                </button>
-                <button
-                  className="btn-small"
+                  <div className="flex items-center gap-2">
+                    <LuSave className="text-[16px]" />
+                    {isLoading ? "Updating..." : "Save & Exit"}
+                  </div>
+                </Button>
+                <Button
                   onClick={validateAndNext}
                   disabled={isLoading}
+                  className="w-auto"
+                  small={true}
                 >
-                  {currentPage === "additionalInfo" && (
-                    <LuDownload className="text-[16px]" />
-                  )}
+                  <div className="flex items-center gap-2">
+                    {currentPage === "additionalInfo" && (
+                      <LuDownload className="text-[16px]" />
+                    )}
 
-                  {currentPage === "additionalInfo"
-                    ? "Preview & Download"
-                    : "Next"}
-                  {currentPage !== "additionalInfo" && (
-                    <LuArrowLeft className="text-[16px] rotate-180" />
-                  )}
-                </button>
+                    {currentPage === "additionalInfo"
+                      ? "Preview & Download"
+                      : "Next"}
+                  </div>
+                </Button>
               </div>
             </div>
           </div>

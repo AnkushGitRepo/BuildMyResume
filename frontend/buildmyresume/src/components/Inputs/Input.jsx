@@ -1,47 +1,50 @@
 import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
-const Input = ({ value, onChange, label, placeholder, type, disabled }) => {
+const Input = ({ value, onChange, label, placeholder, type, disabled, readOnly, inputClassName, onDoubleClick }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  return <div>
-      <label className="text-[13px] text-slate-800">{label}</label>
-
-      <div className="input-box">
+  return (
+    <div className="mb-4">
+      <label className="block text-sm font-semibold text-gray-700 mb-1">
+        {label}
+      </label>
+      <div className="relative">
         <input
-          type={
-            type == "password" ? (showPassword ? "text" : "password") : type
-          }
+          type={type == "password" ? (showPassword ? "text" : "password") : type}
           placeholder={placeholder}
-          className="w-full bg-transparent outline-none"
+          className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${inputClassName}`}
           value={value}
           onChange={(e) => onChange(e)}
           disabled={disabled}
+          readOnly={readOnly}
+          onDoubleClick={onDoubleClick}
         />
 
         {type === "password" && (
-          <>
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
             {showPassword ? (
               <FaRegEye
-                size={22}
-                className="text-primary cursor-pointer"
+                size={20}
+                className="text-gray-500 cursor-pointer"
                 onClick={() => toggleShowPassword()}
               />
             ) : (
               <FaRegEyeSlash
-                size={22}
-                className="text-slate-400 cursor-pointer"
+                size={20}
+                className="text-gray-500 cursor-pointer"
                 onClick={() => toggleShowPassword()}
               />
             )}
-          </>
+          </div>
         )}
       </div>
     </div>
+  );
 };
 
 export default Input;

@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 const Modal = ({
   children,
@@ -26,13 +27,17 @@ const Modal = ({
             <h3 className="md:text-lg font-medium text-gray-900">{title}</h3>
 
             {showActionBtn && (
-              <button
-                className="btn-small-light mr-12"
+              <Button
                 onClick={() => onActionClick()}
+                hideArrow={true}
+                small={true}
+                className="w-auto mr-12"
               >
-                {actionBtnIcon}
-                {actionBtnText}
-              </button>
+                <div className="flex items-center gap-2">
+                  {actionBtnIcon}
+                  {actionBtnText}
+                </div>
+              </Button>
             )}
           </div>
         )}

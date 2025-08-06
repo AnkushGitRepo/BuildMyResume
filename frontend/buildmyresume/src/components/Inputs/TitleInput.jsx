@@ -27,7 +27,7 @@ const TitleInput = ({ title, setTitle }) => {
           <h2 className="text-sm md:text-[17px] font-semibold">{title}</h2>
           <button className="cursor-pointer">
             <LuPencil
-              className="text-sm text-purple-600"
+              className="text-sm text-blue-600"
               onClick={() => setShowInput((prevState) => !prevState)}
             />
           </button>

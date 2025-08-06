@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "../../../components/Inputs/Input";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
+import Button from "../../../components/Button";
 
 const ProjectsDetailFrom = ({
   projectInfo,
@@ -31,13 +32,13 @@ const ProjectsDetailFrom = ({
                 />
               </div>
 
-              <div className="col-span-2">
-                <label className="text-xs font-medium text-slate-600">
+              <div className="col-span-2 mb-4">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Description
                 </label>
                 <textarea
                   placeholder="Short description about the project"
-                  className="form-input w-full mt-1"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   rows={3}
                   value={project.description || ""}
                   onChange={
@@ -80,9 +81,7 @@ const ProjectsDetailFrom = ({
           </div>
         ))}
 
-        <button
-          type="button"
-          className="self-start flex items-center gap-2 px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium hover:bg-purple-200 cursor-pointer"
+        <Button
           onClick={() =>
             addArrayItem({
               title: "",
@@ -91,9 +90,13 @@ const ProjectsDetailFrom = ({
               liveDemo: "",
             })
           }
+          hideArrow={true}
+          className="w-auto self-start"
         >
-          <LuPlus /> Add Project
-        </button>
+          <div className="flex items-center gap-2">
+            <LuPlus /> Add Project
+          </div>
+        </Button>
       </div>
     </div>
 };

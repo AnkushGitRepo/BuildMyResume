@@ -2,6 +2,8 @@ import React from 'react'
 import Input from "../../../components/Inputs/Input";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 import RatingInput from '../../../components/ResumeSections/RatingInput';
+import Button from '../../../components/Button';
+
 
 const SkillsInfoForm = ({skillsInfo, updateArrayItem, addArrayItem, removeArrayItem}) => {
   return (
@@ -27,7 +29,7 @@ const SkillsInfoForm = ({skillsInfo, updateArrayItem, addArrayItem, removeArrayI
               />
 
               <div className="flex flex-col">
-                <label className="text-[13px] text-slate-800 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Proficiency ({skill.progress / 20 || 0}/5)
                 </label>
                 <div className="mt-5">
@@ -54,17 +56,20 @@ const SkillsInfoForm = ({skillsInfo, updateArrayItem, addArrayItem, removeArrayI
           </div>
         ))}
 
-        <button
-          className="self-start flex items-center gap-2 px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium hover:bg-purple-200 cursor-pointer"
+        <Button
           onClick={() =>
             addArrayItem({
               name: "",
               progress: 0,
             })
           }
+          hideArrow={true}
+          className="w-auto self-start"
         >
-          <LuPlus /> Add Skill
-        </button>
+          <div className="flex items-center gap-2">
+            <LuPlus /> Add Skill
+          </div>
+        </Button>
       </div>
     </div>
   )

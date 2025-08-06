@@ -15,11 +15,11 @@ const Tabs = ({tabs, activeTab, setActiveTab}) => {
             onClick={() => setActiveTab(tab.label)}
           >
             <div className="flex items-center">
-              <span className="text-[14px] font-semibold text-purple-700">{tab.label}</span>
+              <span className="text-[14px] font-semibold text-blue-700">{tab.label}</span>
 
             </div>
             {activeTab === tab.label && (
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-linear-to-r from-purple-500/85 to-purple-700"></div>
+              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-linear-to-r from-blue-500/85 to-blue-700"></div>
             )}
           </button>
         ))}

@@ -1,6 +1,8 @@
 import React from 'react'
 import Input from "../../../components/Inputs/Input";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
+import Button from '../../../components/Button';
+
 
 const WorkExperienceForm = ({workExperience, updateArrayItem, addArrayItem, removeArrayItem}) => {
   return (
@@ -53,13 +55,13 @@ const WorkExperienceForm = ({workExperience, updateArrayItem, addArrayItem, remo
               />
             </div>
 
-            <div className="mt-4">
-              <label className="text-xs font-medium text-slate-600">
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Description
               </label>
               <textarea
                 placeholder="What did you do in this role?"
-                className="form-input w-full mt-1"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                 rows={3}
                 value={experience.description || ""}
                 onChange={({ target }) =>
@@ -80,9 +82,7 @@ const WorkExperienceForm = ({workExperience, updateArrayItem, addArrayItem, remo
           </div>
         ))}
 
-        <button
-          type="button"
-          className="self-start flex items-center gap-2 px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium hover:bg-purple-200 cursor-pointer"
+        <Button
           onClick={() =>
             addArrayItem({
               company: "",
@@ -92,9 +92,13 @@ const WorkExperienceForm = ({workExperience, updateArrayItem, addArrayItem, remo
               description: "",
             })
           }
+          hideArrow={true}
+          className="w-auto self-start"
         >
-          <LuPlus /> Add Work Experience
-        </button>
+          <div className="flex items-center gap-2">
+            <LuPlus /> Add Work Experience
+          </div>
+        </Button>
       </div>
     </div>
   )

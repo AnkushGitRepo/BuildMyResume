@@ -3,11 +3,13 @@ import { UserContext } from "../../context/userContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import Input from "../../components/Inputs/Input";
+import Button from "../../components/Button";
 import ProfilePhotoSelector from "../../components/Inputs/ProfilePhotoSelector";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
 import { LuLoader } from "react-icons/lu";
-import Navbar from "../../components/layouts/Navbar";
+import DashboardLayout from "../../components/layouts/DashboardLayout";
+import "./Settings.css";
 
 const Settings = () => {
   const { user, updateUser } = useContext(UserContext);
@@ -55,34 +57,50 @@ const Settings = () => {
     setProfileLoading(true);
     try {
       const formData = new FormData();
-      formData.append("name", name);
+      let profileChanged = false;
+      let emailChanged = false;
+
+      if (name !== user.name) {
+        formData.append("name", name);
+        profileChanged = true;
+      }
       if (profileImage) {
         formData.append("profileImage", profileImage);
+        profileChanged = true;
       }
 
-      console.log("Sending profile update request with data:", { name, profileImage });
-
       if (email !== originalEmail) {
+        emailChanged = true;
         setNewEmail(email);
         setIsEmailModalOpen(true);
         setOtpSent(false);
         setOtp("");
         toast.info("Please verify your new email with the OTP sent.");
-        return; // Stop here, OTP modal will handle the rest
+        setProfileLoading(false);
+        return;
       }
 
-      const response = await axiosInstance.put(
-        API_PATHS.AUTH.UPDATE_PROFILE,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Profile update successful:", response.data);
-      updateUser(response.data);
-      toast.success("Profile updated successfully!");
+      if (!profileChanged && !emailChanged) {
+        toast.info("No changes to update.");
+        setProfileLoading(false);
+        return;
+      }
+
+      if (profileChanged) {
+        console.log("Sending profile update request with data:", { name, profileImage });
+        const response = await axiosInstance.put(
+          API_PATHS.AUTH.UPDATE_PROFILE,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Profile update successful:", response.data);
+        updateUser(response.data);
+        toast.success("Profile updated successfully!");
+      }
     } catch (error) {
       console.error("Profile update failed:", error.response);
       toast.error(error.response?.data?.message || "Failed to update profile.");
@@ -157,117 +175,109 @@ const Settings = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Settings</h1>
+    <DashboardLayout>
+      <div className="flex flex-col gap-8 p-6 bg-gray-100 h-full">
+        {/* Forms Section */}
+        <div className="w-full bg-white rounded-lg shadow-lg p-6 h-full">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-10 text-center">Account Settings</h1>
 
-      {/* Profile Information Section */}
-      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-6">
-          Profile Information
-        </h2>
-        <form onSubmit={handleProfileUpdate}>
-          <div className="mb-6">
-            <ProfilePhotoSelector
-              image={profileImage}
-              setImage={setProfileImage}
-              preview={profileImagePreview}
-              setPreview={setProfileImagePreview}
-            />
-          </div>
-          <div className="mb-4">
-            <Input
-              label="Full Name"
-              type="text"
-              placeholder="Enter your full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="mb-6">
-            <Input
-              label="Email Address"
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={!isEmailEditable}
-            />
-            {!isEmailEditable && (
-              <button
-                type="button"
-                onClick={() => setIsEmailEditable(true)}
-                className="text-blue-600 hover:underline text-sm mt-2"
+          {/* Profile Information Section */}
+          <div className="bg-gray-50 rounded-xl p-8 mb-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-4 border-gray-200">
+              Profile Information
+            </h2>
+            <form onSubmit={handleProfileUpdate}>
+              <div className="mb-6 flex justify-center">
+                <ProfilePhotoSelector
+                  image={profileImage}
+                  setImage={setProfileImage}
+                  preview={profileImagePreview}
+                  setPreview={setProfileImagePreview}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input
+                  label="Full Name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <div>
+                  <Input
+                    label="Email Address"
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    readOnly={!isEmailEditable}
+                    inputClassName={!isEmailEditable ? "bg-gray-200 cursor-not-allowed" : "bg-white"}
+                    onDoubleClick={() => setIsEmailEditable(true)}
+                  />
+                </div>
+              </div>
+              <Button
+                type="submit"
+                onClick={handleProfileUpdate}
+                disabled={profileLoading}
+                hideArrow={true}
+                className="mt-6"
               >
-                Edit Email
-              </button>
-            )}
+                {profileLoading ? (
+                  <LuLoader className="animate-spin text-xl" />
+                ) : (
+                  "Update Profile"
+                )}
+              </Button>
+            </form>
           </div>
-          <button
-            type="submit"
-            className="btn-primary w-full"
-            disabled={profileLoading}
-          >
-            {profileLoading ? (
-              <LuLoader className="animate-spin text-xl" />
-            ) : (
-              "Update Profile"
-            )}
-          </button>
-          
-        </form>
-      </div>
 
-      {/* Change Password Section */}
-      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-6">
-          Change Password
-        </h2>
-        <form onSubmit={handleChangePassword}>
-          <div className="mb-4">
-            <Input
-              label="Current Password"
-              type="password"
-              placeholder="Enter your current password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
+          {/* Change Password Section */}
+          <div className="bg-gray-50 rounded-xl p-8 mb-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-4 border-gray-200">
+              Change Password
+            </h2>
+            <form onSubmit={handleChangePassword}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input
+                  label="Current Password"
+                  type="password"
+                  placeholder="Enter your current password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+                <Input
+                  label="New Password"
+                  type="password"
+                  placeholder="Enter your new password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <Input
+                  label="Confirm New Password"
+                  type="password"
+                  placeholder="Confirm your new password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                />
+              </div>
+              <Button
+                type="submit"
+                onClick={handleChangePassword}
+                disabled={passwordLoading}
+                hideArrow={true}
+                className="mt-6"
+              >
+                {passwordLoading ? (
+                  <LuLoader className="animate-spin text-xl" />
+                ) : (
+                  "Change Password"
+                )}
+              </Button>
+            </form>
           </div>
-          <div className="mb-4">
-            <Input
-              label="New Password"
-              type="password"
-              placeholder="Enter your new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </div>
-          <div className="mb-6">
-            <Input
-              label="Confirm New Password"
-              type="password"
-              placeholder="Confirm your new password"
-              value={confirmNewPassword}
-              onChange={(e) => setConfirmNewPassword(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn-primary w-full"
-            disabled={passwordLoading}
-          >
-            {passwordLoading ? (
-              <LuLoader className="animate-spin text-xl" />
-            ) : (
-              "Change Password"
-            )}
-          </button>
-        </form>
+        </div>
       </div>
-
-      
-    </div>
 
       {/* Email Change Modal */}
       <Modal
@@ -300,10 +310,11 @@ const Settings = () => {
               />
             </div>
           )}
-          <button
+          <Button
             type="submit"
-            className="btn-primary w-full"
+            onClick={otpSent ? handleVerifyEmailOtp : handleEmailChangeRequest}
             disabled={emailChangeLoading}
+            hideArrow={true}
           >
             {emailChangeLoading ? (
               <LuLoader className="animate-spin text-xl" />
@@ -312,7 +323,7 @@ const Settings = () => {
             ) : (
               "Send OTP"
             )}
-          </button>
+          </Button>
         </form>
       </Modal>
 
@@ -327,8 +338,10 @@ const Settings = () => {
           <p className="text-sm text-gray-500 mt-2">Page will reload shortly.</p>
         </div>
       </Modal>
-    </>
+    </DashboardLayout>
   );
 };
+
+
 
 export default Settings;

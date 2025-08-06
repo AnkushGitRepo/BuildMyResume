@@ -13,7 +13,7 @@ The project is structured into two main parts: a Node.js backend API and a React
 The project is organized into `backend` and `frontend` directories, each containing its specific components and configurations.
 
 ```
-/Users/ankush/Desktop/BMR2/
+/BMR2/
 ├───.gitignore
 ├───README.md
 ├───.git/

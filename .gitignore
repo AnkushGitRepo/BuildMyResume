@@ -3,3 +3,5 @@ frontend/buildmyresume/.env
 .env
 backend/node_modules
 .idea
+
+frontend/buildmyresume/public/settings-video.mp4

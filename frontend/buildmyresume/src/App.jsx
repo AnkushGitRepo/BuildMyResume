@@ -7,6 +7,7 @@ import Dashboard from "./pages/Home/Dashboard";
 import EditResume from "./pages/ResumeUpdate/EditResume";
 import UserProvider from "./context/userContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route element={<ProtectedRoute />}>
               <Route path="/settings" element={<Settings />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </div>

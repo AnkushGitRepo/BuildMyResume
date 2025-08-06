@@ -8,6 +8,7 @@ import { LuCircleCheckBig } from "react-icons/lu";
 import Tabs from "../../components/Tabs";
 import TemplateCard from "../../components/Cards/TemplateCard";
 import RenderResume from "../../components/ResumeTemplates/RenderResume";
+import Button from "../../components/Button";
 
 const TAB_DATA = [{ label: "Templates" }, { label: "Color Palettes" }];
 
@@ -58,13 +59,17 @@ const ThemeSelector = ({
       <div className="flex items-center justify-between mb-5 mt-2">
         <Tabs tabs={TAB_DATA} activeTab={tabValue} setActiveTab={setTabValue} />
 
-        <button
-          className="btn-small-light"
+        <Button
           onClick={() => handleThemeSelection()}
+          hideArrow={true}
+          small={true}
+          className="self-end"
         >
-          <LuCircleCheckBig className="text-[16px]" />
-          Done
-        </button>
+          <div className="flex items-center gap-2">
+            <LuCircleCheckBig className="text-[16px]" />
+            Select
+          </div>
+        </Button>
       </div>
 
       <div className="grid grid-cols-12 gap-5">
@@ -110,8 +115,8 @@ export default ThemeSelector;
 const ColorPalette = ({ colors, isSelected, onSelect }) => {
   return (
     <div
-      className={`h-28 bg-purple-50 flex rounded-lg overflow-hidden border-2 ${
-        isSelected ? "border-purple-500" : "border-none"
+      className={`h-28 bg-blue-50 flex rounded-lg overflow-hidden border-2 ${
+        isSelected ? "border-blue-500" : "border-none"
       }`}
     >
       {colors.map((color, index) => (

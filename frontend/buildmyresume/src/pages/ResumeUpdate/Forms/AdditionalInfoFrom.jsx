@@ -2,6 +2,7 @@ import React from "react";
 import Input from "../../../components/Inputs/Input";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 import RatingInput from "../../../components/ResumeSections/RatingInput";
+import Button from "../../../components/Button";
 
 const AdditionalInfoFrom = ({
   languages,
@@ -33,7 +34,7 @@ const AdditionalInfoFrom = ({
                 />
 
                 <div>
-                  <label className="text-xs font-medium text-slate-600 mb-7 block">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Proficiency
                   </label>
                   <RatingInput
@@ -60,13 +61,15 @@ const AdditionalInfoFrom = ({
             </div>
           ))}
 
-          <button
-            type="button"
-            className="self-start flex items-center gap-2 px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium hover:bg-purple-200 cursor-pointer"
+          <Button
             onClick={() => addArrayItem("languages", { name: "", progress: 0 })}
+            hideArrow={true}
+            className="w-auto self-start"
           >
-            <LuPlus /> Add Language
-          </button>
+            <div className="flex items-center gap-2">
+              <LuPlus /> Add Language
+            </div>
+          </Button>
         </div>
       </div>
 
@@ -101,13 +104,15 @@ const AdditionalInfoFrom = ({
             </div>
           ))}
 
-          <button
-            type="button"
-            className="self-start flex items-center gap-2 px-4 py-2 rounded bg-purple-100 text-purple-800 text-sm font-medium hover:bg-purple-200 cursor-pointer"
+          <Button
             onClick={() => addArrayItem("interests", "")}
+            hideArrow={true}
+            className="w-auto self-start"
           >
-            <LuPlus /> Add Interest
-          </button>
+            <div className="flex items-center gap-2">
+              <LuPlus /> Add Interest
+            </div>
+          </Button>
         </div>
       </div>
     </div>
