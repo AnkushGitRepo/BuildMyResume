@@ -8,14 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "BMR2",
-    format: async (req, file) => "png", // supports promises as well
-    public_id: (req, file) => file.originalname.split(".")[0] + "-" + Date.now(),
-  },
-});
+const storage = multer.memoryStorage();
 
 // File filter
 const fileFilter = (req, file, cb) => {

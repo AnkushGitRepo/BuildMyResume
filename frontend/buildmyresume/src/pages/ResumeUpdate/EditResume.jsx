@@ -257,7 +257,7 @@ const EditResume = () => {
 
   // Function to navigate to the previous page
   const goBack = () => {
-     const pages = [
+    const pages = [
       "profile-info",
       "contact-info",
       "work-experience",
@@ -369,7 +369,7 @@ const EditResume = () => {
           />
         );
 
-        case "additionalInfo":
+      case "additionalInfo":
         return (
           <AdditionalInfoFrom
             languages={resumeData.languages}
@@ -495,8 +495,7 @@ const EditResume = () => {
 
       const uploadResponse = await axiosInstance.put(
         API_PATHS.RESUME.UPLOAD_IMAGES(resumeId),
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        formData
       );
 
       const { thumbnailLink, profilePreviewUrl } = uploadResponse.data;
@@ -540,7 +539,7 @@ const EditResume = () => {
 
   // Delete Resume
   const handleDeleteResume = async () => {
-     try {
+    try {
       setIsLoading(true);
       const response = await axiosInstance.delete(API_PATHS.RESUME.DELETE(resumeId));
       toast.success('Resume Deleted Successfully')
@@ -697,42 +696,42 @@ const EditResume = () => {
       </div>
 
       <Modal
-          isOpen={openThemeSelector}
-          onClose={() => setOpenThemeSelector(false)}
-          title="Change Theme"
-        >
-          <div className="w-[90vw] h-[80vh]">
-            <ThemeSelector
-              selectedTheme={resumeData?.template}
-              setSelectedTheme={(value) => {
-                setResumeData((prevState) => ({
-                  ...prevState,
-                  template: value || prevState.template,
-                }));
-              }}
-              resumeData={null}
-              onClose={() => setOpenThemeSelector(false)}
-            />
-          </div>
-        </Modal>
+        isOpen={openThemeSelector}
+        onClose={() => setOpenThemeSelector(false)}
+        title="Change Theme"
+      >
+        <div className="w-[90vw] h-[80vh]">
+          <ThemeSelector
+            selectedTheme={resumeData?.template}
+            setSelectedTheme={(value) => {
+              setResumeData((prevState) => ({
+                ...prevState,
+                template: value || prevState.template,
+              }));
+            }}
+            resumeData={null}
+            onClose={() => setOpenThemeSelector(false)}
+          />
+        </div>
+      </Modal>
 
-        <Modal
-          isOpen={openPreviewModal}
-          onClose={() => setOpenPreviewModal(false)}
-          title={resumeData.title}
-          showActionBtn
-          actionBtnText="Download"
-          actionBtnIcon={<LuDownload className="text-[16px]" />}
-          onActionClick={() => reactToPrintFn()}
-        >
-          <div ref={resumeDownloadRef} className="w-[98vw] h-[90vh]">
-            <RenderResume
-              templateId={resumeData?.template?.theme || ""}
-              resumeData={resumeData}
-              colorPalette={resumeData?.template?.colorPalette || []}
-            />
-          </div>
-        </Modal>
+      <Modal
+        isOpen={openPreviewModal}
+        onClose={() => setOpenPreviewModal(false)}
+        title={resumeData.title}
+        showActionBtn
+        actionBtnText="Download"
+        actionBtnIcon={<LuDownload className="text-[16px]" />}
+        onActionClick={() => reactToPrintFn()}
+      >
+        <div ref={resumeDownloadRef} className="w-[98vw] h-[90vh]">
+          <RenderResume
+            templateId={resumeData?.template?.theme || ""}
+            resumeData={resumeData}
+            colorPalette={resumeData?.template?.colorPalette || []}
+          />
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 };
